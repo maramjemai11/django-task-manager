@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Task - Task Manager{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Confirm Deletion
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <h5><i class="bi bi-exclamation-triangle"></i> Warning</h5>
+                    <p class="mb-0">This action cannot be undone. The task will be permanently deleted.</p>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ task.title }}</h5>
+                        {% if task.description %}
+                            <p class="card-text text-muted">{{ task.description|truncatewords:30 }}</p>
+                        {% endif %}
+                        <div class="small text-muted">
+                            <span class="badge bg-{% if task.priority == 'high' %}danger{% elif task.priority == 'medium' %}warning{% else %}success{% endif %}">
+                                {{ task.get_priority_display }}
+                            </span>
+                            <span class="badge bg-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}info{% else %}secondary{% endif %}">
+                                {{ task.get_status_display }}
+                            </span>
+                            {% if task.due_date %}
+                                <br><i class="bi bi-calendar-event"></i> Due: {{ task.due_date|date:"M d, Y" }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Yes, Delete Task
+                        </button>
+                        <a href="{% url 'tasks:task_list' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Safety Tips -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-shield-check"></i> Safety Tips
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><i class="bi bi-check text-success"></i> Consider marking as completed instead of deleting</li>
+                    <li><i class="bi bi-check text-success"></i> You can always create a new task if needed</li>
+                    <li><i class="bi bi-check text-success"></i> Deleted tasks cannot be recovered</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

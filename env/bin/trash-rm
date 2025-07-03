@@ -1,5 +1,0 @@
-#!/home/maramjemai/test/env/bin/python3
-from __future__ import absolute_import
-import sys
-from trashcli.rm import main as main
-sys.exit(main())
